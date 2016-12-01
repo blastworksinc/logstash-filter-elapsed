@@ -18,7 +18,7 @@ require 'time'
 #
 # The filter has been modified to allow specification of a timestamp to use
 # in determining the time interval between two events, instead of relying
-# on the timestamp logstash creates upon receiving and processing the event. 
+# on the timestamp logstash creates upon receiving and processing the event.
 #
 # The configuration looks like this:
 # [source,ruby]
@@ -254,7 +254,7 @@ class LogStash::Filters::Elapsed < LogStash::Filters::Base
       event.tag(ELAPSED_TAG)
       event.tag(MATCH_TAG)
 
-      event[ELAPSED_FIELD] = DateTime.parse(elapsed_time.to_s)
+      event[ELAPSED_FIELD] = elapsed_time
       event[@unique_id_field] = unique_id
       event[TIMESTAMP_START_EVENT_FIELD] = DateTime.parse(timestamp_start_event.to_s)
       event[TIMESTAMP_SINCE_EPOCH_START_EVENT_FIELD] = DateTime.parse(timestamp_start_event.to_s).strftime('%Q').to_i
