@@ -166,7 +166,7 @@ class LogStash::Filters::Elapsed < LogStash::Filters::Base
       if(@start_events.has_key?(unique_id))
         start_event = @start_events.delete(unique_id).event
         @mutex.unlock
-        elapsed = Time.parse(event[@end_timestamp]) - Time.parse(start_event[@start_timestamp])
+        elapsed = Time.parse(event[@end_timestamp].to_s) - Time.parse(start_event[@start_timestamp].to_s)
         if(@new_event_on_match)
           elapsed_event = new_elapsed_event(elapsed, unique_id, start_event[@start_timestamp])
           filter_matched(elapsed_event)
@@ -254,10 +254,10 @@ class LogStash::Filters::Elapsed < LogStash::Filters::Base
       event.tag(ELAPSED_TAG)
       event.tag(MATCH_TAG)
 
-      event[ELAPSED_FIELD] = elapsed_time
+      event[ELAPSED_FIELD] = DateTime.parse(elapsed_time.to_s)
       event[@unique_id_field] = unique_id
-      event[TIMESTAMP_START_EVENT_FIELD] = Time.parse(timestamp_start_event)
-      event[TIMESTAMP_SINCE_EPOCH_START_EVENT_FIELD] = DateTime.parse(timestamp_start_event).strftime('%Q').to_i
+      event[TIMESTAMP_START_EVENT_FIELD] = DateTime.parse(timestamp_start_event.to_s)
+      event[TIMESTAMP_SINCE_EPOCH_START_EVENT_FIELD] = DateTime.parse(timestamp_start_event.to_s).strftime('%Q').to_i
 
       return event
   end
