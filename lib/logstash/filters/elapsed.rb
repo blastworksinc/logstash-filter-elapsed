@@ -224,8 +224,8 @@ class LogStash::Filters::Elapsed < LogStash::Filters::Base
       error_event[HOST_FIELD] = Socket.gethostname
       error_event[@unique_id_field] = element.event[@unique_id_field]
       error_event[ELAPSED_FIELD] = element.age
-      error_event[TIMESTAMP_START_EVENT_FIELD] = LogStash::Timestamp.new(Time.parse(element.event[@start_timestamp]))
-      error_event[TIMESTAMP_SINCE_EPOCH_START_EVENT_FIELD] = LogStash::Timestamp.new(Time.parse(element.event[@start_timestamp]).strftime('%Q').to_i)
+      error_event[TIMESTAMP_START_EVENT_FIELD] = LogStash::Timestamp.new(Time.parse(element.event[@start_timestamp].to_s))
+      error_event[TIMESTAMP_SINCE_EPOCH_START_EVENT_FIELD] = Time.parse(element.event[@start_timestamp].to_s).strftime('%Q').to_i
 
       events << error_event
       filter_matched(error_event)
